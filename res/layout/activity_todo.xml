@@ -1,0 +1,46 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.sample.todoapp.TodoActivity" >
+
+    <ListView
+        android:id="@+id/lvItems"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/addBt"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/customtheme_btn_default_focused_holo_light" >
+    </ListView>
+
+    <EditText
+        android:id="@+id/etNewItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/addBt"
+        android:layout_alignLeft="@+id/lvItems"
+        android:layout_below="@+id/lvItems"
+        android:layout_toLeftOf="@+id/addBt"
+        android:ems="10"
+        android:hint="@string/item_label" >
+
+        <requestFocus />
+    </EditText>
+
+    <Button
+        android:id="@+id/addBt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/lvItems"
+        android:layout_marginBottom="21dp"
+        android:hint="@string/add_bt"
+        android:onClick="addTodoItem"
+        android:text="@string/add_bt_label" />
+
+</RelativeLayout>

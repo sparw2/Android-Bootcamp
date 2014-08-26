@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Generated with http://android-holo-colors.com -->
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <style name="CustomTheme" parent="@style/_CustomTheme"/>
+
+  <style name="_CustomTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+
+    <item name="android:editTextBackground">@drawable/customtheme_edit_text_holo_light</item>
+
+    <item name="android:buttonStyle">@style/ButtonCustomTheme</item>
+
+    <item name="android:imageButtonStyle">@style/ImageButtonCustomTheme</item>
+
+    <item name="android:fastScrollThumbDrawable">@drawable/customtheme_fastscroll_thumb_holo</item>
+
+  </style>
+
+</resources>
