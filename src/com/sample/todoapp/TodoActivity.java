@@ -1,13 +1,7 @@
 package com.sample.todoapp;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
-
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
@@ -21,28 +15,35 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.activeandroid.ActiveAndroid;
+import com.activeandroid.query.Delete;
+import com.activeandroid.query.Select;
+
 
 public class TodoActivity extends ActionBarActivity implements
 	EditFragment.OnItemEditedListener{
 	
-	private List<String> items;
-	private ArrayAdapter<String> listAdapter;
+	private List<Item> items;
+	private ArrayAdapter<Item> listAdapter;
 	private ListView listView;
 	private EditText newItem; 
 	
-	private static final int REQUEST_CODE=20;
+	
+	//private static final int REQUEST_CODE=20;
 	public static final int RESULT_OK = 200; 
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ActiveAndroid.initialize(this);
+        
         setContentView(R.layout.activity_todo);
         listView = (ListView)findViewById(R.id.lvItems);
         newItem = (EditText)findViewById(R.id.etNewItem);
 
 
         readItems();
-        listAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,items);
+        listAdapter = new ArrayAdapter<Item>(this, android.R.layout.simple_list_item_1,items);
         listView.setAdapter(listAdapter);
         
         listViewListener();
@@ -102,7 +103,7 @@ public class TodoActivity extends ActionBarActivity implements
 				*/
 				FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 				
-				EditFragment fragment = EditFragment.newInstance(listAdapter.getItem(position), position);
+				EditFragment fragment = EditFragment.newInstance(listAdapter.getItem(position).name, position);
 				ft.attach(fragment);
 				fragment.show(ft, "");
 			}
@@ -110,6 +111,7 @@ public class TodoActivity extends ActionBarActivity implements
 		});
     }
     
+  /*  
     @Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 	   if (requestCode== REQUEST_CODE && resultCode == RESULT_OK){
@@ -121,30 +123,31 @@ public class TodoActivity extends ActionBarActivity implements
 	   }
 	   
     }
-    
+    */
     
     private void readItems(){
-    	File itemDir = getFilesDir();
-    	File itemStorage = new File(itemDir, "todo.txt");
-    	try{
-    		items = FileUtils.readLines(itemStorage);
-    	}catch(IOException e){
-    		items = new ArrayList<>();
-    	}
+    	items = new Select().from(Item.class).execute();
     }
     
     private void writeItems(){
-    	File itemDir = getFilesDir();
-    	File itemStorage = new File(itemDir, "todo.txt");
-    	try{
-    		FileUtils.writeLines(itemStorage, items);
-    	}catch(IOException e){
-    		e.printStackTrace();
-    	}	
+    	try {
+    		ActiveAndroid.beginTransaction();
+    	   	
+    		// remove all previous data
+    		new Delete().from(Item.class).where("1 == 1").execute();
+    		
+    		for (Item item : items)
+    			item.save();
+        	
+    		ActiveAndroid.setTransactionSuccessful();
+    	} finally {
+   	        ActiveAndroid.endTransaction();
+    	}
+
     }
     
     public void addTodoItem(View v){
-    	listAdapter.add(newItem.getText().toString());
+    	listAdapter.add(new Item(newItem.getText().toString()));
     	newItem.setText("");
     	writeItems();
     }
@@ -152,7 +155,7 @@ public class TodoActivity extends ActionBarActivity implements
 
 	@Override
 	public void onItemEdited(String item, int position) {
-		 items.set(position, item);
+		 items.set(position, new Item(item));
 		 listAdapter.notifyDataSetChanged();
 		 writeItems();
 	}
