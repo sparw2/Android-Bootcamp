@@ -13,6 +13,7 @@
     <string name="ed_item_below_label">Edit Item Below:</string>
     <string name="edit_item_label">Edit Item Below:</string>
     <string name="chk_priority">Priority</string>
+    <string name="itemDueDate_label">Due Date</string>
     
     
     <string-array name="Items_priority">
@@ -21,5 +22,6 @@
         <item>Low</item>
     </string-array>
         <string name="priority_label">Priority:</string>
+        <string name="dueDate_label">Due Date</string>
 
 </resources>

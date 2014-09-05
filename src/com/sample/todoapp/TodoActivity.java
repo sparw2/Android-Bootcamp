@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -24,7 +23,7 @@ public class TodoActivity extends ActionBarActivity implements
 	EditFragment.OnItemEditedListener{
 	
 	private List<Item> items;
-	private ArrayAdapter<Item> listAdapter;
+	private ItemAdapter listAdapter;
 	private ListView listView;
 	private EditText newItem; 
 	
@@ -43,7 +42,7 @@ public class TodoActivity extends ActionBarActivity implements
 
 
         readItems();
-        listAdapter = new ArrayAdapter<Item>(this, android.R.layout.simple_list_item_1,items);
+        listAdapter = new ItemAdapter(this, items);
         listView.setAdapter(listAdapter);
         
         listViewListener();
